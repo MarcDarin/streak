@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Ma Streak 🔥</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#f0ece4;min-height:100dvh;display:flex;flex-direction:column;align-items:center;padding:env(safe-area-inset-top,48px) 20px env(safe-area-inset-bottom,32px);overflow-x:hidden}
+  .app{width:100%;max-width:390px}
+  .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;padding-top:8px}
+  .logo{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;background:linear-gradient(135deg,#f4a93b,#ff6b35);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .record{font-size:12px;color:rgba(240,236,228,0.5);background:#13131a;border:1px solid rgba(255,255,255,0.08);padding:6px 12px;border-radius:20px}
+  .record span{color:#f4a93b;font-weight:700}
+  .ring-wrap{position:relative;width:210px;height:210px;margin:0 auto 20px}
+  .ring-svg{width:210px;height:210px;transform:rotate(-90deg)}
+  .ring-bg{fill:none;stroke:rgba(255,255,255,0.06);stroke-width:13}
+  .ring-fill{fill:none;stroke-width:13;stroke-linecap:round;stroke:url(#g1);stroke-dasharray:565;stroke-dashoffset:565;transition:stroke-dashoffset 1.2s cubic-bezier(0.34,1.56,0.64,1);filter:drop-shadow(0 0 8px rgba(244,169,59,0.5))}
+  .ring-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+  .fire{font-size:34px;animation:pulse 2s ease-in-out infinite}
+  @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+  .days-num{font-family:'Syne',sans-serif;font-size:52px;font-weight:800;line-height:1;background:linear-gradient(180deg,#fff 0%,#f4a93b 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .days-lbl{font-size:11px;letter-spacing:2px;color:rgba(240,236,228,0.4);text-transform:uppercase}
+  .m-label{text-align:center;font-family:'Syne',sans-serif;font-size:17px;font-weight:700;color:#f4a93b;margin-bottom:6px;min-height:26px}
+  .since{text-align:center;font-size:12px;color:rgba(240,236,228,0.4);margin-bottom:24px}
+  .stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:18px}
+  .stat{background:#13131a;border:1px solid rgba(255,255,255,0.06);border-radius:18px;padding:14px 10px;text-align:center}
+  .stat-v{font-family:'Syne',sans-serif;font-size:22px;font-weight:800}
+  .stat-l{font-size:10px;color:rgba(240,236,228,0.4);margin-top:2px;letter-spacing:.5px}
+  .np-header{display:flex;justify-content:space-between;margin-bottom:8px}
+  .np-lbl{font-size:12px;color:rgba(240,236,228,0.4)}
+  .np-pct{font-size:12px;font-weight:700;color:#f4a93b}
+  .np-bar{height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;margin-bottom:24px}
+  .np-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,#ff6b35,#f4a93b);transition:width 1s cubic-bezier(0.34,1.56,0.64,1);box-shadow:0 0 8px rgba(244,169,59,0.4)}
+  .section-title{font-size:11px;text-transform:uppercase;letter-spacing:2px;color:rgba(240,236,228,0.35);margin-bottom:10px}
+  .milestones{display:flex;flex-direction:column;gap:8px;margin-bottom:24px}
+  .ms{background:#13131a;border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:13px 15px;display:flex;align-items:center;gap:12px;transition:all .4s;opacity:.4}
+  .ms.unlocked{opacity:1;border-color:rgba(244,169,59,0.3);background:linear-gradient(135deg,rgba(244,169,59,0.08),#13131a)}
+  .ms.next{opacity:.8;border-color:rgba(255,255,255,0.12);border-style:dashed}
+  .ms-icon{font-size:20px;width:34px;text-align:center;flex-shrink:0}
+  .ms-info{flex:1}
+  .ms-name{font-size:14px;font-weight:500}
+  .ms-days{font-size:11px;color:rgba(240,236,228,0.4);margin-top:1px}
+  .ms-badge{font-size:11px;padding:3px 8px;border-radius:8px;flex-shrink:0}
+  .ms-badge.ok{font-weight:700;color:#f4a93b;background:rgba(244,169,59,0.12)}
+  .ms-badge.no{color:rgba(240,236,228,0.35)}
+  .btns{display:flex;flex-direction:column;gap:12px}
+  .btn-main{width:100%;padding:18px;border:none;border-radius:24px;background:linear-gradient(135deg,#ff6b35,#f4a93b);color:#fff;font-family:'Syne',sans-serif;font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 8px 32px rgba(244,169,59,0.3);transition:transform .15s}
+  .btn-main:active{transform:scale(0.97)}
+  .btn-reset{width:100%;padding:15px;border:1px solid rgba(255,255,255,0.1);border-radius:24px;background:transparent;color:rgba(255,100,100,0.7);font-family:'DM Sans',sans-serif;font-size:14px;cursor:pointer;transition:color .2s}
+  .btn-reset:active{color:rgba(255,100,100,1)}
+  .toast{position:fixed;bottom:40px;left:50%;transform:translateX(-50%) translateY(80px);background:#1e1e28;border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:13px 20px;font-size:14px;font-weight:500;white-space:nowrap;transition:transform .4s cubic-bezier(0.34,1.56,0.64,1),opacity .4s;opacity:0;z-index:100;pointer-events:none}
+  .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+  .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);z-index:80;display:flex;align-items:flex-end;justify-content:center;padding-bottom:env(safe-area-inset-bottom,24px);opacity:0;pointer-events:none;transition:opacity .3s}
+  .overlay.show{opacity:1;pointer-events:all}
+  .sheet{background:#1a1a24;border:1px solid rgba(255,255,255,0.1);border-radius:28px 28px 20px 20px;padding:28px 24px 24px;width:100%;max-width:390px;transform:translateY(40px);transition:transform .3s cubic-bezier(0.34,1.56,0.64,1)}
+  .overlay.show .sheet{transform:translateY(0)}
+  .sheet h3{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;margin-bottom:8px;color:#ff6b6b}
+  .sheet p{font-size:14px;color:rgba(240,236,228,0.5);margin-bottom:24px;line-height:1.5}
+  .sheet-btns{display:flex;gap:10px}
+  .s-btn{flex:1;padding:15px;border-radius:18px;border:none;font-family:'Syne',sans-serif;font-size:15px;font-weight:700;cursor:pointer}
+  .s-cancel{background:rgba(255,255,255,0.08);color:#f0ece4}
+  .s-confirm{background:linear-gradient(135deg,#e05555,#ff6b35);color:#fff}
+  canvas#confetti{position:fixed;inset:0;pointer-events:none;z-index:50;width:100%;height:100%}
+</style>
+</head>
+<body>
+<canvas id="confetti"></canvas>
+<div class="app">
+  <div class="header">
+    <div class="logo">🔥 Ma Streak</div>
+    <div class="record">Record : <span id="best">0</span>j</div>
+  </div>
+
+  <div class="ring-wrap">
+    <svg class="ring-svg" viewBox="0 0 210 210">
+      <defs>
+        <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#ff6b35"/>
+          <stop offset="100%" stop-color="#f4a93b"/>
+        </linearGradient>
+      </defs>
+      <circle class="ring-bg" cx="105" cy="105" r="90"/>
+      <circle class="ring-fill" id="ring" cx="105" cy="105" r="90"/>
+    </svg>
+    <div class="ring-center">
+      <div class="fire" id="emoji">💫</div>
+      <div class="days-num" id="dnum">0</div>
+      <div class="days-lbl">jours</div>
+    </div>
+  </div>
+
+  <div class="m-label" id="mlabel">Commence ton aventure !</div>
+  <div class="since" id="since">Pas encore commencé</div>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-v" id="weeks">0</div><div class="stat-l">Semaines</div></div>
+    <div class="stat"><div class="stat-v" id="months">0</div><div class="stat-l">Mois</div></div>
+    <div class="stat"><div class="stat-v" id="attempts">0</div><div class="stat-l">Tentatives</div></div>
+  </div>
+
+  <div class="np-header">
+    <span class="np-lbl" id="nplbl">Prochain : Premier jour (1j)</span>
+    <span class="np-pct" id="nppct">0%</span>
+  </div>
+  <div class="np-bar"><div class="np-fill" id="npfill" style="width:0%"></div></div>
+
+  <div class="section-title">Paliers</div>
+  <div class="milestones" id="milestones"></div>
+
+  <div class="btns">
+    <button class="btn-main" id="btnCheck">✓ J'ai tenu aujourd'hui !</button>
+    <button class="btn-reset" id="btnReset">J'ai craqué… recommencer</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<div class="overlay" id="overlay">
+  <div class="sheet">
+    <h3>Oh non… 😔</h3>
+    <p>Tu veux vraiment remettre le compteur à zéro ? Ton record sera préservé.</p>
+    <div class="sheet-btns">
+      <button class="s-btn s-cancel" id="btnCancel">Annuler</button>
+      <button class="s-btn s-confirm" id="btnConfirm">Recommencer</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const MS = [
+  {days:1,icon:"🌱",name:"Premier jour",label:"Tu as survécu au jour 1 !"},
+  {days:3,icon:"💪",name:"3 jours",label:"La force est avec toi !"},
+  {days:7,icon:"⭐",name:"1 semaine",label:"Une semaine entière !"},
+  {days:14,icon:"🚀",name:"2 semaines",label:"Tu décolles !"},
+  {days:21,icon:"🧠",name:"3 semaines",label:"Nouvelle habitude !"},
+  {days:30,icon:"🏆",name:"1 mois",label:"Incroyable, un mois !"},
+  {days:60,icon:"💎",name:"2 mois",label:"Tu es une légende !"},
+  {days:90,icon:"👑",name:"3 mois",label:"Le roi / la reine !"},
+  {days:180,icon:"🌟",name:"6 mois",label:"Transformation totale !"},
+  {days:365,icon:"🎖️",name:"1 an",label:"UNE ANNÉE ! Mythique !"},
+];
+
+let S = JSON.parse(localStorage.getItem("sk4")||"null")||{days:0,best:0,attempts:0,startDate:null,lastCheck:null};
+const save=()=>localStorage.setItem("sk4",JSON.stringify(S));
+
+let toastT;
+function toast(msg){
+  const t=document.getElementById("toast");
+  t.textContent=msg;t.classList.add("show");
+  clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove("show"),2800);
+}
+
+function confetti(){
+  const c=document.getElementById("confetti");
+  c.width=window.innerWidth;c.height=window.innerHeight;
+  const ctx=c.getContext("2d");
+  const cols=["#f4a93b","#ff6b35","#fff","#4a9","#e88"];
+  const ps=Array.from({length:80},()=>({x:Math.random()*c.width,y:-10,r:Math.random()*6+3,d:Math.random()*8+2,col:cols[Math.floor(Math.random()*5)],ta:0,ti:Math.random()*.07+.05}));
+  let f=0,raf;
+  (function draw(){
+    ctx.clearRect(0,0,c.width,c.height);
+    ps.forEach(p=>{p.ta+=p.ti;p.y+=p.d;p.x+=Math.sin(f*.05)*1.5;ctx.beginPath();ctx.ellipse(p.x,p.y,p.r*.5,p.r,p.ta,0,2*Math.PI);ctx.fillStyle=p.col;ctx.globalAlpha=Math.max(0,1-p.y/c.height*1.2);ctx.fill();});
+    ctx.globalAlpha=1;f++;
+    if(f<140)raf=requestAnimationFrame(draw);else ctx.clearRect(0,0,c.width,c.height);
+  })();
+}
+
+function render(){
+  const d=S.days;
+  document.getElementById("dnum").textContent=d;
+  document.getElementById("best").textContent=S.best;
+  document.getElementById("weeks").textContent=Math.floor(d/7);
+  document.getElementById("months").textContent=Math.floor(d/30);
+  document.getElementById("attempts").textContent=S.attempts;
+  document.getElementById("emoji").textContent=d===0?"💫":d<7?"🔥":d<30?"⚡":d<90?"💥":"👑";
+  // Ring
+  const circ=2*Math.PI*90;
+  document.getElementById("ring").style.strokeDashoffset=circ*(1-Math.min(d/365,1));
+  // Labels
+  const prev=[...MS].reverse().find(m=>m.days<=d);
+  const next=MS.find(m=>m.days>d)||MS[MS.length-1];
+  document.getElementById("mlabel").textContent=prev?prev.label:"Commence ton aventure !";
+  document.getElementById("since").textContent=S.startDate?"Depuis le "+new Date(S.startDate).toLocaleDateString("fr-FR",{day:"numeric",month:"long",year:"numeric"}):"Pas encore commencé";
+  // Progress
+  const prevD=prev?prev.days:0;
+  const pct=Math.min(Math.round(((d-prevD)/(next.days-prevD))*100),100);
+  document.getElementById("nplbl").textContent=`Prochain : ${next.name} (${next.days-d}j)`;
+  document.getElementById("nppct").textContent=pct+"%";
+  document.getElementById("npfill").style.width=pct+"%";
+  // Milestones
+  const c=document.getElementById("milestones");c.innerHTML="";
+  MS.forEach(m=>{
+    const u=d>=m.days,n=m===next;
+    const el=document.createElement("div");
+    el.className="ms"+(u?" unlocked":n?" next":"");
+    el.innerHTML=`<div class="ms-icon">${m.icon}</div><div class="ms-info"><div class="ms-name">${m.name}</div><div class="ms-days">${m.days} jour${m.days>1?"s":""}</div></div><div class="ms-badge ${u?"ok":"no"}">${u?"✓ Atteint":n?`${m.days-d}j`:"🔒"}</div>`;
+    c.appendChild(el);
+  });
+}
+
+document.getElementById("btnCheck").addEventListener("click",()=>{
+  const today=new Date().toDateString();
+  if(S.lastCheck===today){toast("✅ Déjà validé aujourd'hui, reviens demain !");return;}
+  S.days++;S.lastCheck=today;
+  if(!S.startDate)S.startDate=new Date().toISOString();
+  if(S.days>S.best)S.best=S.days;
+  save();render();
+  const m=MS.find(m=>m.days===S.days);
+  if(m){confetti();toast(`${m.icon} Palier atteint : ${m.name} !`);}
+  else toast(`🔥 Jour ${S.days} validé ! Continue !`);
+});
+
+document.getElementById("btnReset").addEventListener("click",()=>document.getElementById("overlay").classList.add("show"));
+document.getElementById("btnCancel").addEventListener("click",()=>document.getElementById("overlay").classList.remove("show"));
+document.getElementById("btnConfirm").addEventListener("click",()=>{
+  S={...S,days:0,attempts:S.attempts+1,startDate:null,lastCheck:null};
+  save();render();
+  document.getElementById("overlay").classList.remove("show");
+  toast("💪 C'est reparti, tu peux le faire !");
+});
+
+setTimeout(render,50);
+</script>
+</body>
+</html>
